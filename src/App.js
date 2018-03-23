@@ -8,36 +8,30 @@ import moment from 'moment';
 import './App.css';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const data = {
-  markers: [
-    {address: '1335 Garrick Way, Marietta, GA 30068-2169', text: 'RS', installer: 'Richard Silvernail', installStart: '3/20/2018', installEnd: '3/23/2018'},
-    {address: '5267 Manhasset Ct, Atlanta, GA 30338-3409', text: 'KP', installer: 'Kris Parker', installStart: '3/19/2018', installEnd: '3/22/2018'},
-    {address: '2848 N Hill Dr NE, Atlanta, GA 30305-3210', text: 'LS', installer: 'Leonard Sievers',  installStart: '3/20/2018', installEnd: '3/21/2018'},
-    {address: '403 Elojay Ct, Woodstock, GA 30189-2538', text: 'RS', installer: 'Richard Silvernail',  installStart: '3/21/2018', installEnd: '3/21/2018'},
-    {address: '2118 Castleway Dr NE, Atlanta, GA 30345-3916', text: 'RS', installer: 'Richard Silvernail',  installStart: '3/22/2018', installEnd: '3/22/2018'},
-  ]
-};
+import data from './data.json';
+import Marker from './models/Marker.js'
+
+const jobs = data.map((job) => new Marker(job));
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      markers: data.markers,
-      markersWithLocation: [],
-      selectedDate: moment('3-20-2018', 'MM-DD-YYYY'),
+      markers: jobs,
+      selectedDate: moment(),
       selectedMarkers: []
     }
 
     this.handleDateChange = this.handleDateChange.bind(this);
-    this.getCoordinates = this.getCoordinates.bind(this);
-    this.selectMarkers = this.selectMarkers.bind(this);
-    this.fetchCoordinates = this.fetchCoordinates.bind(this);
+//    this.getCoordinates = this.getCoordinates.bind(this);
+//    this.selectMarkers = this.selectMarkers.bind(this);
+//    this.fetchCoordinates = this.fetchCoordinates.bind(this);
   }
 
-  async fetchCoordinates(address) {
+  fetchCoordinates(address) {
     // url used for Geocoder API request
     const url = `${GEOCODE_URL}json?address=${address}&key=${API_KEY}`;
-    const geocoding = await fetch(url)
+    const geocoding = fetch(url)
       .then((res) => res.json())
       .then((json) => json.results[0].geometry.location);
 
@@ -52,34 +46,31 @@ class App extends Component {
       markersWithLocation.push(Object.assign({}, marker, await this.fetchCoordinates(address)));
     });
 
-    this.setState({
-      markersWithLocation: markersWithLocation,
-    });
+    return markersWithLocation;
   }
 
   selectMarkers(markers, date = this.state.selectedDate) {
     const filteredMarkers = markers.filter((marker) => {
-      const installStart = moment(marker.installStart, "MM-DD-YYYY");
-      const installEnd = moment(marker.installEnd, "MM-DD-YYYY");
+      const installStart = moment(marker.installStart, "YYYY-MM-DD");
+      const installEnd = moment(marker.installEnd, "YYYY-MM-DD");
 
       return date.isSameOrAfter(installStart) && date.isSameOrBefore(installEnd);
     });
 
+    const filteredMarkersWithLocation = this.getCoordinates(filteredMarkers);
+
     this.setState({
-      selectedMarkers: filteredMarkers,
+      selectedMarkers: filteredMarkersWithLocation,
       selectedDate: date
     });
   }
 
   handleDateChange(date) {
-    this.selectMarkers(this.state.markersWithLocation, date);
-  }
-
-  componentWillMount() {
-    this.getCoordinates(this.state.markers);
+    this.selectMarkers(this.state.markers, date);
   }
 
   render() {
+    console.log(this.state.selectedMarkers);
     return (
       <div className="App">
         <PellaMap
