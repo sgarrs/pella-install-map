@@ -41,9 +41,9 @@ class App extends Component {
   getCoordinates(markers) {
     let markersWithLocation = [];
 
-    markers.forEach(async (marker, i) => {
+    markers.forEach((marker, i) => {
       const address = marker.address.replace(/\s/g, '+');
-      markersWithLocation.push(Object.assign({}, marker, await this.fetchCoordinates(address)));
+      markersWithLocation.push(Object.assign({}, marker, this.fetchCoordinates(address)));
     });
 
     return markersWithLocation;
@@ -57,10 +57,8 @@ class App extends Component {
       return date.isSameOrAfter(installStart) && date.isSameOrBefore(installEnd);
     });
 
-    const filteredMarkersWithLocation = this.getCoordinates(filteredMarkers);
-
     this.setState({
-      selectedMarkers: filteredMarkersWithLocation,
+      selectedMarkers: this.getCoordinates(filteredMarkers),
       selectedDate: date
     });
   }
@@ -70,7 +68,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state.selectedMarkers);
     return (
       <div className="App">
         <PellaMap

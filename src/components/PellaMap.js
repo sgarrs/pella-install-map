@@ -14,15 +14,11 @@ class PellaMap extends React.Component {
   }
 
   setMapMarkers(markers) {
-    let mapMarkers = [];
-
+    const mapMarkers = [];
     markers.forEach((marker, i) => {
       mapMarkers.push(this.createMapMarker(marker, i));
     });
-
-    this.setState({
-      mapMarkers: mapMarkers
-    });
+    return mapMarkers;
   }
 
   createMapMarker(marker, i) {
@@ -31,17 +27,11 @@ class PellaMap extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setMapMarkers(nextProps.markers);
-
     this.setState({
-      markers: nextProps.markers
+      markers: nextProps.markers,
+      mapMarkers: this.setMapMarkers(nextProps.markers)
     });
   }
-
-  componentDidMount() {
-    this.setMapMarkers(this.state.markers);
-  }
-
 
   render() {
     return (
