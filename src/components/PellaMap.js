@@ -8,8 +8,6 @@ class PellaMap extends React.Component {
     this.state = {
       center: {lat: 33.755208, lng: -84.3565457},
       zoom: 10,
-      markers: this.props.markers,
-      mapMarkers: []
     }
   }
 
@@ -28,9 +26,14 @@ class PellaMap extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      markers: nextProps.markers,
       mapMarkers: this.setMapMarkers(nextProps.markers)
     });
+  }
+
+  componentWillMount() {
+    this.setState({
+      mapMarkers: this.setMapMarkers(this.props.markers)
+    })
   }
 
   render() {

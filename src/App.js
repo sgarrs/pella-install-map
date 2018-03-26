@@ -19,7 +19,6 @@ class App extends Component {
     this.state = {
       markers: jobs,
       selectedDate: moment(),
-      selectedMarkers: []
     }
 
     this.handleDateChange = this.handleDateChange.bind(this);
@@ -43,7 +42,9 @@ class App extends Component {
 
     markers.forEach((marker, i) => {
       const address = marker.address.replace(/\s/g, '+');
-      markersWithLocation.push(Object.assign({}, marker, this.fetchCoordinates(address)));
+      this.fetchCoordinates(address).then((coords) =>
+        markersWithLocation.push(Object.assign({}, marker, coords))
+      );
     });
 
     return markersWithLocation;
@@ -51,10 +52,8 @@ class App extends Component {
 
   selectMarkers(markers, date = this.state.selectedDate) {
     const filteredMarkers = markers.filter((marker) => {
-      const installStart = moment(marker.installStart, "YYYY-MM-DD");
-      const installEnd = moment(marker.installEnd, "YYYY-MM-DD");
-
-      return date.isSameOrAfter(installStart) && date.isSameOrBefore(installEnd);
+      return date.isSameOrAfter(moment(marker.installStart, "YYYY-MM-DD"))
+        && date.isSameOrBefore(moment(marker.installEnd, "YYYY-MM-DD"));
     });
 
     this.setState({
@@ -65,6 +64,10 @@ class App extends Component {
 
   handleDateChange(date) {
     this.selectMarkers(this.state.markers, date);
+  }
+
+  componentWillMount() {
+    this.selectMarkers(this.state.markers);
   }
 
   render() {
