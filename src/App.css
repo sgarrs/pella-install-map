@@ -42,7 +42,36 @@
   border-bottom: 1px solid black;
   padding: 1rem;
 }
+.EventItem > p {
+  margin-bottom: .5rem;
+  margin-top: 0;
+}
 
-.EventItem h1 {
+.event__address {
   font-size: 1.2rem;
+}
+.event__status {
+  font-size: 1.2rem;
+  text-align: center;
+  background: green;
+  padding: .25rem 0;
+  color: white;
+  margin-bottom: 0px;
+}
+.event__net-price {
+  font-size: 1.2rem;
+  text-align: center;
+  border: 1px solid black;
+  padding: .25rem 0;
+  margin-top: 0px;
+}
+
+.event__times > span,
+.event__installer > span,
+.event__sales-rep > span,
+.event__customer > span,
+.event__phone > span,
+.event__email > span,
+.event__order > span {
+  font-weight: bold;
 }

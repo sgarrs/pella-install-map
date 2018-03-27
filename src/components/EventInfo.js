@@ -13,35 +13,20 @@ class EventInfo extends React.Component {
       const key = `event-item-${i}`
       return (
         <div className="EventItem" key={key}>
-          <div>
-            <h1>Install Info:</h1>
-            <p>{event.installer}</p>
-            <ul>
-              <li>Start: {event.installStart}</li>
-              <li>End: {event.installEnd}</li>
-            </ul>
-            <p>Task Status: {event.taskStatus}</p>
-          </div>
-          <div>
-            <h1>Order Info:</h1>
-            <ul>
-              <li>Net Price: {event.netPrice}</li>
-              <li>Order #: {event.orderNumber}</li>
-              <li>Quote #: {event.quoteNumber}</li>
-              <li>Sales Rep: {event.salesRep}</li>
-            </ul>
-          </div>
-          <div>
-            <h1>Customer Info:</h1>
-            <p>{event.customerName}</p>
-            <p>{event.address}</p>
-            <div>
-              <ul>
-                <li>Phone: {event.phone}</li>
-                <li>Email: {event.email}</li>
-              </ul>
-            </div>
-          </div>
+          <h1 className="event__address">{event.address}</h1>
+          <h2 className="event__status">{event.taskStatus}</h2>
+          <h2 className="event__net-price">{event.netPrice}</h2>
+          <p className="event__times">
+            <span className="event__times--start">Start: </span>{event.installStart} — <span className="event__times--end">End: </span>{event.installEnd}
+          </p>
+          <p className="event__installer"><span>Crew: </span>{event.installer}</p>
+          <p className="event__sales-rep"><span>Sales Rep: </span>{event.salesRep}</p>
+          <p className="event__order">
+            <span className="event__order--order">Order #: </span>{event.orderNumber} — <span className="event__order--quote">Quote #: </span>{event.quoteNumber}
+          </p>
+          <p className="event__customer"><span>Customer: </span>{event.customerName}</p>
+          <p className="event__phone"><span>Phone: </span>{event.phone}</p>
+          <p className="event__email"><span>Email: </span>{event.email}</p>
         </div>
       )
     });
