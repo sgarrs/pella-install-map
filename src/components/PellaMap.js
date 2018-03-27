@@ -12,10 +12,7 @@ class PellaMap extends React.Component {
   }
 
   setMapMarkers(markers) {
-    const mapMarkers = [];
-    markers.forEach((marker, i) => {
-      mapMarkers.push(this.createMapMarker(marker, i));
-    });
+    const mapMarkers = markers.map((marker, i) => this.createMapMarker(marker, i));
     return mapMarkers;
   }
 

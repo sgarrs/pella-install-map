@@ -21,33 +21,25 @@ class App extends Component {
       selectedDate: moment(),
     }
 
+    this.selectedMarkers = [];
+
     this.handleDateChange = this.handleDateChange.bind(this);
-//    this.getCoordinates = this.getCoordinates.bind(this);
-//    this.selectMarkers = this.selectMarkers.bind(this);
-//    this.fetchCoordinates = this.fetchCoordinates.bind(this);
-  }
-
-  fetchCoordinates(address) {
-    // url used for Geocoder API request
-    const url = `${GEOCODE_URL}json?address=${address}&key=${API_KEY}`;
-    const geocoding = fetch(url)
-      .then((res) => res.json())
-      .then((json) => json.results[0].geometry.location);
-
-    return geocoding;
+    this.getCoordinates = this.getCoordinates.bind(this);
+    this.selectMarkers = this.selectMarkers.bind(this);
   }
 
   getCoordinates(markers) {
-    let markersWithLocation = [];
-
-    markers.forEach((marker, i) => {
+    const markersWithCoords = markers.map((marker, i) => {
       const address = marker.address.replace(/\s/g, '+');
-      this.fetchCoordinates(address).then((coords) =>
-        markersWithLocation.push(Object.assign({}, marker, coords))
-      );
+      const url = `${GEOCODE_URL}json?address=${address}&key=${API_KEY}`;
+
+      return fetch(url)
+        .then((res) => res.json())
+        .then((json) => Object.assign({}, marker, json.results[0].geometry.location))
+        .catch((err) => console.log(err));
     });
 
-    return markersWithLocation;
+    return markersWithCoords;
   }
 
   selectMarkers(markers, date = this.state.selectedDate) {
@@ -56,9 +48,9 @@ class App extends Component {
         && date.isSameOrBefore(moment(marker.installEnd, "YYYY-MM-DD"));
     });
 
-    this.setState({
-      selectedMarkers: this.getCoordinates(filteredMarkers),
-      selectedDate: date
+    Promise.all(this.getCoordinates(filteredMarkers)).then((selectedMarkers) => {
+      this.selectedMarkers = selectedMarkers; // because setState is async, we can't render markers correctly if props are from this.state
+      this.setState({ date: date });
     });
   }
 
@@ -75,7 +67,7 @@ class App extends Component {
       <div className="App">
         <PellaMap
           apiKey={API_KEY}
-          markers={this.state.selectedMarkers}
+          markers={this.selectedMarkers}
         />
         <div className="sidebar">
           <DatePicker
@@ -83,7 +75,7 @@ class App extends Component {
             onChange={this.handleDateChange}
             className='pella-datepicker'
           />
-          <EventInfo events={this.state.selectedMarkers} />
+          <EventInfo events={this.selectedMarkers} />
         </div>
       </div>
     );
