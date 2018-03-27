@@ -8,7 +8,7 @@ function Marker(data) {
   const installStart = data['Install Start Date'];
   const installEnd = data['Install End Date'];
   const quoteNumber = data['Quote #'];
-  const orderNumber = data['Order Number'];
+  const orderNumber = data['Pqm Order Number'];
   const salesRep = data['Sales Rep'];
 
   function getAddress() {
