@@ -49,7 +49,7 @@ class App extends Component {
     });
 
     Promise.all(this.getCoordinates(filteredMarkers)).then((selectedMarkers) => {
-      this.selectedMarkers = selectedMarkers; // because setState is async, we can't render markers correctly if props are from this.state
+      this.selectedMarkers = selectedMarkers; // because setState is async, we can't render markers correctly if lat/lng props come from state
       this.setState({ date: date });
     });
   }

@@ -13,30 +13,34 @@ class EventInfo extends React.Component {
       const key = `event-item-${i}`
       return (
         <div className="EventItem" key={key}>
-          <h1>Install Info:</h1>
-          <p>{event.installer}</p>
           <div>
-            <span>Event Times:</span>
+            <h1>Install Info:</h1>
+            <p>{event.installer}</p>
             <ul>
               <li>Start: {event.installStart}</li>
               <li>End: {event.installEnd}</li>
             </ul>
-          <p>Task Status: {event.taskStatus}</p>
+            <p>Task Status: {event.taskStatus}</p>
           </div>
-          <h1>Job Info:</h1>
-          <p>Net Price: {event.netPrice}</p>
-          <p>Order #: {event.orderNumber}</p>
-          <p>Quote #: {event.quoteNumber}</p>
-          <p>Sales Rep: {event.salesRep}</p>
-          <h1>Customer Info:</h1>
-          <p>{event.customerName}</p>
-          <p>{event.address}</p>
           <div>
-            <span>Contact:</span>
+            <h1>Order Info:</h1>
             <ul>
-              <li>Phone: {event.phone}</li>
-              <li>Email: {event.email}</li>
+              <li>Net Price: {event.netPrice}</li>
+              <li>Order #: {event.orderNumber}</li>
+              <li>Quote #: {event.quoteNumber}</li>
+              <li>Sales Rep: {event.salesRep}</li>
             </ul>
+          </div>
+          <div>
+            <h1>Customer Info:</h1>
+            <p>{event.customerName}</p>
+            <p>{event.address}</p>
+            <div>
+              <ul>
+                <li>Phone: {event.phone}</li>
+                <li>Email: {event.email}</li>
+              </ul>
+            </div>
           </div>
         </div>
       )
