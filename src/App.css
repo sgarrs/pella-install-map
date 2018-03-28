@@ -6,7 +6,7 @@
 }
 
 .PellaMap {
-  width: 75%;
+  width: 65%;
   height: 100vh;
 }
 
@@ -28,8 +28,23 @@
 .sidebar {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: flex-start;
   overflow-y: scroll;
+  width: 35%;
+}
+
+.pella-datepicker {
+  width: 300px;
+  height: 30px;
+  background: blue;
+  color: white;
+  border: 1px solid black;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 1rem 0;
 }
 
 .EventInfo {
@@ -42,6 +57,9 @@
   border-bottom: 1px solid black;
   padding: 1rem;
 }
+.EventItem:first-child {
+  border-top: 1px solid black;
+}
 .EventItem > p {
   margin-bottom: .5rem;
   margin-top: 0;
@@ -52,18 +70,16 @@
 }
 .event__status {
   font-size: 1.2rem;
-  text-align: center;
-  background: green;
-  padding: .25rem 0;
-  color: white;
-  margin-bottom: 0px;
+}
+
+.event__status--scheduled {
+  color: green;
+}
+.event__status--other {
+  color: brown;
 }
 .event__net-price {
-  font-size: 1.2rem;
-  text-align: center;
-  border: 1px solid black;
-  padding: .25rem 0;
-  margin-top: 0px;
+  font-size: 1rem;
 }
 
 .event__times > span,
@@ -72,6 +88,7 @@
 .event__customer > span,
 .event__phone > span,
 .event__email > span,
+.event__net-price > span,
 .event__order > span {
   font-weight: bold;
 }

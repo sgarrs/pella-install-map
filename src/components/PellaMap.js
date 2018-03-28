@@ -18,7 +18,11 @@ class PellaMap extends React.Component {
 
   createMapMarker(marker, i) {
     const key = `marker-${i}`;
-    return <PellaMarker key={key} lat={marker.lat} lng={marker.lng} text={marker.text} />;
+    if (marker !== undefined) {
+      return <PellaMarker key={key} lat={marker.lat} lng={marker.lng} />;
+    } else {
+      return <PellaMarker key={key} lat={null} lng={null} />;
+    }
   }
 
   componentWillReceiveProps(nextProps) {
