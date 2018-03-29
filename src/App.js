@@ -18,12 +18,12 @@ class App extends Component {
     super(props);
     this.state = {
       markers: jobs,
-      selectedDate: moment(),
     }
-    this.selectedMarkers = [];
     this.handleDateChange = this.handleDateChange.bind(this);
     this.getCoordinates = this.getCoordinates.bind(this);
     this.selectMarkers = this.selectMarkers.bind(this);
+
+    this.selectedMarkers = [];
   }
 
   getCoordinates(markers) {
@@ -40,18 +40,19 @@ class App extends Component {
     return markersWithCoords;
   }
 
-  selectMarkers(markers, date = this.state.selectedDate) {
+  selectMarkers(markers, date = moment()) {
     const filteredMarkers = markers.filter((marker) => {
       return date.isSameOrAfter(moment(marker.installStart, "YYYY-MM-DD"))
         && date.isSameOrBefore(moment(marker.installEnd, "YYYY-MM-DD"));
     });
 
     Promise.all(this.getCoordinates(filteredMarkers))
-      .then((selectedMarkers) => {
-        this.selectedMarkers = selectedMarkers; // because setState is async, we can't render markers correctly if lat/lng props come from state
+      .then((filteredMarkersWithCoords) => {
+        this.selectedMarkers = filteredMarkersWithCoords; // because setState is async, we can't render markers correctly if lat/lng props come from state
+        this.setState({ selectedDate: date });
       })
       .catch(err => console.log(err));
-    this.setState({ selectedDate: date });
+
   }
 
   handleDateChange(date) {

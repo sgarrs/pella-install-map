@@ -18,10 +18,10 @@ class EventInfo extends React.Component {
               {event.taskStatus}
             </h2>
             <h1 className="event__address">{event.address}</h1>
+            <p className="event__installer"><span>Crew: </span>{event.installer}</p>
             <p className="event__times">
               <span className="event__times--start">Start: </span>{event.installStart} — <span className="event__times--end">End: </span>{event.installEnd}
             </p>
-            <p className="event__installer"><span>Crew: </span>{event.installer}</p>
             <p className="event__sales-rep"><span>Sales Rep: </span>{event.salesRep}</p>
             <p className="event__order">
               <span className="event__order--order">Order #: </span>{event.orderNumber} — <span className="event__order--quote">Quote #: </span>{event.quoteNumber}
@@ -33,7 +33,7 @@ class EventInfo extends React.Component {
           </div>
         )
       } else {
-        return <div className="EventItem">Error finding project info.</div>;
+        return undefined;
       }
     });
 

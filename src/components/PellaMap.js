@@ -21,7 +21,7 @@ class PellaMap extends React.Component {
     if (marker !== undefined) {
       return <PellaMarker key={key} lat={marker.lat} lng={marker.lng} />;
     } else {
-      return <PellaMarker key={key} lat={null} lng={null} />;
+      return;
     }
   }
 
