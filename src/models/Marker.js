@@ -16,7 +16,14 @@ function Marker(data) {
   }
 
   function getBranch() {
-    return data.Branch.substring(0, 3);
+    switch(data.Branch.substring(0, 3)) {
+      case '720' || '082':
+        return 'GA';
+      case '768' || '337':
+        return 'TN';
+      default:
+        return null;
+    }
   }
 
   function getPrice() {

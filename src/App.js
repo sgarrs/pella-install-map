@@ -18,10 +18,14 @@ class App extends Component {
     super(props);
     this.state = {
       markers: jobs,
+      selectedDate: moment(),
+      selectedBranch: 'ALL'
     }
     this.handleDateChange = this.handleDateChange.bind(this);
     this.getCoordinates = this.getCoordinates.bind(this);
     this.selectMarkers = this.selectMarkers.bind(this);
+    this.selectBranch = this.selectBranch.bind(this);
+    this.createBranchFilterButton = this.createBranchFilterButton.bind(this);
 
     this.selectedMarkers = [];
   }
@@ -40,9 +44,10 @@ class App extends Component {
     return markersWithCoords;
   }
 
-  selectMarkers(markers, date = moment()) {
+  selectMarkers(markers, date = this.state.selectedDate) {
     const filteredMarkers = markers.filter((marker) => {
-      return date.isSameOrAfter(moment(marker.installStart, "YYYY-MM-DD"))
+      return (this.state.selectedBranch === 'ALL' ? true : this.state.selectedBranch === marker.branch)
+        && date.isSameOrAfter(moment(marker.installStart, "YYYY-MM-DD"))
         && date.isSameOrBefore(moment(marker.installEnd, "YYYY-MM-DD"));
     });
 
@@ -52,7 +57,26 @@ class App extends Component {
         this.setState({ selectedDate: date });
       })
       .catch(err => console.log(err));
+  }
 
+  selectBranch(branch) {
+    this.setState({
+      selectedBranch: branch
+    },
+    () => this.selectMarkers(this.state.markers));
+  }
+
+  createBranchFilterButton(branch, i) {
+    const key = `branch-${i}`;
+    return (
+      <button
+        key={key}
+        className={branch === this.state.selectedBranch ? 'selected' : ''}
+        onClick={this.selectBranch.bind(this, branch)}
+      >
+        {branch}
+      </button>
+    );
   }
 
   handleDateChange(date) {
@@ -71,11 +95,18 @@ class App extends Component {
           markers={this.selectedMarkers}
         />
         <div className="sidebar">
-          <DatePicker
-            selected={this.state.selectedDate}
-            onChange={this.handleDateChange}
-            className='pella-datepicker'
-          />
+          <div className="ControlPanel">
+            <p className="instruction">Filter by branch:</p>
+            <div className="BranchFilter">
+              {['GA', 'TN', 'ALL'].map((branch, i) => this.createBranchFilterButton(branch, i))}
+            </div>
+            <p className="instruction">Select date:</p>
+            <DatePicker
+              selected={this.state.selectedDate}
+              onChange={this.handleDateChange}
+              className='pella-datepicker'
+            />
+          </div>
           <EventInfo events={this.selectedMarkers} />
         </div>
       </div>
