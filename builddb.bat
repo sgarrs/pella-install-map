@@ -1,0 +1,1 @@
+cmd /c node src\sequelize.js

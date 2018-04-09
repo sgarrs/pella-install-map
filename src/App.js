@@ -47,8 +47,8 @@ class App extends Component {
   selectMarkers(markers, date = this.state.selectedDate) {
     const filteredMarkers = markers.filter((marker) => {
       return (this.state.selectedBranch === 'ALL' ? true : this.state.selectedBranch === marker.branch)
-        && date.isSameOrAfter(moment(marker.installStart, "YYYY-MM-DD"))
-        && date.isSameOrBefore(moment(marker.installEnd, "YYYY-MM-DD"));
+        && date.isSameOrAfter(moment(marker.installStart))
+        && date.isSameOrBefore(moment(marker.installEnd));
     });
 
     Promise.all(this.getCoordinates(filteredMarkers))

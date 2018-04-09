@@ -1,15 +1,16 @@
 const Sequelize = require('sequelize');
 const fs = require('fs');
+const path = require('path');
 
 const username = 'access';
 const password = '082p3lla$$';
-const hostName = '192.168.0.8';
+const hostName = '082SYS';
 const dbName = 'PSIImport';
 
 const sequelize = new Sequelize(dbName, username, password, {
   dialect: 'mssql',
   host: hostName,
-  port: 1433,
+  port: 62457,
   logging: false,
   dialectOptions: {
     requestTimeout: 30000
@@ -18,8 +19,9 @@ const sequelize = new Sequelize(dbName, username, password, {
 
 const data = sequelize.query("SELECT * FROM dbo.ActiveInstall", { type: sequelize.QueryTypes.SELECT })
   .then(function (installs) {
-    fs.writeFile('./src/data.json', JSON.stringify(installs), function (err) {
+    fs.writeFile(path.resolve(__dirname, 'data.json'), JSON.stringify(installs), function (err) {
       if (err) throw err;
       console.log("Saved!");
     });
-  });
+  })
+  .then(() => sequelize.close());
