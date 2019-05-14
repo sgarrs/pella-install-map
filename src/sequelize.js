@@ -2,10 +2,10 @@ const Sequelize = require('sequelize');
 const fs = require('fs');
 const path = require('path');
 
-const username = 'access';
-const password = '082p3lla$$';
-const hostName = '082SYS';
-const dbName = 'PSIImport';
+const username = '';
+const password = '';
+const hostName = '';
+const dbName = '';
 
 const sequelize = new Sequelize(dbName, username, password, {
   dialect: 'mssql',
